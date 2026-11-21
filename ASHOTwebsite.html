@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>У Ашота — Веб-студия честного вайба</title>
+  <style>
+    :root {
+      --bg: #0f0f11;
+      --surface: #18181c;
+      --surface-hover: #222228;
+      --border: #2c2c34;
+      --text: #f4f4f6;
+      --muted: #a1a1aa;
+      --accent: #ffdd00;
+      --accent-hover: #ffe84d;
+      --discord: #5865F2;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(15, 15, 17, 0.94);
+      backdrop-filter: blur(8px);
+      z-index: 30;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      font-weight: 900;
+      font-size: 1.3rem;
+      letter-spacing: 0.5px;
+      color: var(--accent);
+      cursor: pointer;
+      user-select: none;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+    .flash-trigger-btn {
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #f4f4f5;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .flash-trigger-btn:hover {
+      background: #3f3f46;
+    }
+    /* Плашка статуса Ашота */
+    .status-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      font-size: 0.9rem;
+    }
+    .status-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    .status-online .status-dot {
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+    .status-school .status-dot {
+      background: var(--danger);
+      box-shadow: 0 0 8px var(--danger);
+    }
+    .status-school .status-label {
+      color: #fca5a5;
+      font-weight: 700;
+    }
+    .hero {
+      padding: 72px 0 56px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 2.9rem;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      font-weight: 900;
+    }
+    .hero h1 span {
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 1.12rem;
+      color: var(--muted);
+      max-width: 660px;
+      margin-bottom: 30px;
+    }
+    .btn {
+      display: inline-block;
+      background-color: var(--accent);
+      color: #111;
+      font-weight: 800;
+      padding: 13px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: transform 0.15s, background-color 0.2s;
+    }
+    .btn:hover {
+      background-color: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+    .btn-discord {
+      background-color: var(--discord);
+      color: #fff;
+    }
+    .btn-discord:hover {
+      background-color: #4752c4;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-outline:hover {
+      background: var(--surface);
+    }
+    section {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+    }
+    h2 {
+      font-size: 1.95rem;
+      margin-bottom: 12px;
+      font-weight: 800;
+    }
+    .section-sub {
+      color: var(--muted);
+      margin-bottom: 28px;
+      font-size: 0.98rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px;
+      border-radius: 12px;
+      transition: border-color 0.2s;
+    }
+    .card:hover {
+      border-color: #444452;
+    }
+    .card h3 {
+      color: var(--accent);
+      margin-bottom: 10px;
+      font-size: 1.18rem;
+    }
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    /* Портфолио и фильтры */
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--accent);
+      color: #111;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 0.78rem;
+      background: #27272f;
+      color: var(--accent);
+      padding: 3px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    /* Таймер */
+    .timer-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+    }
+    .timer-digits {
+      font-size: 2.3rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+    }
+    /* Калькулятор */
+    .calc-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .calc-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      user-select: none;
+      background: var(--bg);
+    }
+    .check-item:hover {
+      border-color: #444452;
+    }
+    .check-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+    .calc-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border);
+    }
+    .total-price {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+    .draniki-info {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    /* FAQ Аккордеон */
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .faq-q {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text);
+      padding: 18px 22px;
+      font-size: 1.02rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-a {
+      padding: 0 22px 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      display: none;
+    }
+    .faq-item.open .faq-a {
+      display: block;
+    }
+    /* Форма и контакты */
+    .form-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 96px;
+    }
+    /* Модальное окно */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 40;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      max-width: 480px;
+      width: 100%;
+      padding: 28px;
+      border-radius: 14px;
+    }
+    .modal h3 {
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-size: 1.35rem;
+    }
+    /* Оверлей флешки */
+    #flashOverlay {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      color: #000000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.05s ease-in;
+    }
+    #flashOverlay.active {
+      opacity: 1;
+      pointer-events: all;
+      transition: none;
+    }
+    #flashOverlay.fade-out {
+      opacity: 0;
+      transition: opacity 2.6s ease-out;
+    }
+    .flash-title {
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .flash-sub {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      max-width: 640px;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translate(0, 0); }
+      20% { transform: translate(-10px, 8px); }
+      40% { transform: translate(10px, -8px); }
+      60% { transform: translate(-8px, -6px); }
+      80% { transform: translate(8px, 6px); }
+    }
+    body.shaking {
+      animation: shake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    /* Уведомление */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--accent);
+      color: #111;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+      z-index: 50;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .warning-text {
+      color: #71717a;
+      font-size: 0.8rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="flashOverlay">
+    <div class="flash-title" id="flashTitle">FLASHBANG OUT!</div>
+    <div class="flash-sub" id="flashSub">Светлой темы здесь нет. Береги глаза, брат.</div>
+  </div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo" onclick="easterEgg()" title="Нажми 5 раз для секрета">У АШОТА</div>
+        <div class="nav-links">
+          <a href="#portfolio">Работы</a>
+          <a href="#calc">Калькулятор</a>
+          <a href="#faq">Вопросы</a>
+          <a href="#contact">Заказать</a>
+          <button class="flash-trigger-btn" onclick="triggerFlashbang('FLASHBANG OUT!', 'Светлой темы здесь нет. Береги глаза, брат.')">Светлая тема</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="status-bar">
+    <div class="container status-inner" id="statusBar">
+      <div>
+        <span class="status-dot"></span>
+        <span class="status-label" id="statusText">Проверяем расписание Ашота...</span>
+      </div>
+      <div style="color: var(--muted); font-size: 0.85rem;" id="clockText"></div>
+    </div>
+  </div>
+
+  <main>
+    <div class="hero">
+      <div class="container">
+        <div class="badge">Веб-студия «У Ашота» • Сделаем за 5 минут</div>
+        <h1>Сайты с мощным вайбом, за которые <span>не стыдно</span></h1>
+        <p>Собираем быстрые одностраничники без корпоративной воды. Считаете цену в BYN, пишете в Discord — и через пять минут ссылка уже у вас.</p>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn" onclick="handleOrderAttempt('scroll')">Заказать за 5 минут</button>
+          <a href="#calc" class="btn btn-outline">Калькулятор в BYN</a>
+        </div>
+      </div>
+    </div>
+
+    <section id="portfolio">
+      <div class="container">
+        <h2>Примеры наших работ</h2>
+        <p class="section-sub">Нажмите на любую карточку, чтобы глянуть детали проекта.</p>
+
+        <div class="timer-box">
+          <div>
+            <div style="font-weight: 800; font-size: 1.1rem;">Тест скорости студии «У Ашота»</div>
+            <div style="color: var(--muted); font-size: 0.9rem;">Запустите таймер и посмотрите, как быстро улетают 5 минут</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div class="timer-digits" id="timerDisplay">05:00</div>
+            <button class="btn" onclick="toggleTimer()" id="timerBtn">Старт</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <button class="filter-btn active" onclick="filterWorks('all', this)">Все проекты</button>
+          <button class="filter-btn" onclick="filterWorks('landing', this)">Лендинги</button>
+          <button class="filter-btn" onclick="filterWorks('card', this)">Визитки</button>
+          <button class="filter-btn" onclick="filterWorks('fun', this)">Фановые</button>
+        </div>
+
+        <div class="grid" id="worksGrid">
+          <div class="card work-item" data-cat="landing" style="cursor: pointer;" onclick="openModal('Шаурма у Ашота', 'Лендинг точки быстрого питания с меню, ценами в BYN и кнопкой заказа в один клик. Сделано за 4 минуты 30 секунд.')">
+            <span class="tag">Лендинг</span>
+            <h3>Шаурма у Ашота</h3>
+            <p>Сочный одностраничник с меню и быстрым заказом без лишних вопросов.</p>
+          </div>
+          <div class="card work-item" data-cat="card" style="cursor: pointer;" onclick="openModal('Визитка киберспортсмена', 'Тёмная страница с кнопкой копирования Discord, ссылками на Steam и конфигом. Ничего не тормозит.')">
+            <span class="tag">Визитка</span>
+            <h3>Профиль игрока</h3>
+            <p>Минималистичная визитка с быстрым копированием ника и соцсетей.</p>
+          </div>
+          <div class="card work-item" data-cat="fun" style="cursor: pointer;" onclick="openModal('Генератор отмазок', 'Интерактивный сайт для тех, кто не успел сдать проект вовремя. Встроенная флешка прилагается.')">
+            <span class="tag">Фановый</span>
+            <h3>Анти-дедлайн 3000</h3>
+            <p>Страница с рандомайзером честных причин, почему всё будет готово завтра.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calc">
+      <div class="container">
+        <h2>Калькулятор честной стоимости (BYN)</h2>
+        <p class="section-sub">Отметьте нужные фичи — цена считается сразу в белорусских рублях и порциях драников.</p>
+        <div class="calc-box">
+          <div class="calc-options">
+            <label class="check-item">
+              <input type="checkbox" class="calc-cb" data-price="0" checked disabled>
+              <span>Базовый каркас (0 BYN)</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="calc-cb" data-price="1.5" data-label="Кнопки с анимацией">
+              <span>Кнопки с анимацией (+1.5 BYN)</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="calc-cb" data-price="3" data-label="Чтобы не криво на телефоне">
+              <span>Чтобы не криво на телефоне (+3 BYN)</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="calc-cb" data-price="4" data-label="Чтобы не стыдно скинуть маме">
+              <span>Чтобы не стыдно скинуть маме (+4 BYN)</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="calc-cb" data-price="5" data-label="Срочно сегодня">
+              <span>Сделать «ещё вчера» (+5 BYN)</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" class="calc-cb" data-price="10" data-label="Правки после сдачи">
+              <span>Правки «поиграйте со шрифтами» (+10 BYN)</span>
+            </label>
+          </div>
+          <div class="calc-result">
+            <div>
+              <div style="font-size: 0.9rem; color: var(--muted);">Итоговая оценка:</div>
+              <div class="total-price" id="totalPrice">0 BYN (или за спасибо)</div>
+              <div class="draniki-info" id="dranikiPrice">Эквивалент: 0 порций драников</div>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-outline" onclick="resetCalc()">Сбросить</button>
+              <button class="btn" onclick="handleOrderAttempt('calc')">Подставить в заявку ↓</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <h2>Частые вопросы</h2>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Почему нельзя заказать сайт в будни с 13:00 до 20:00? <span>+</span></button>
+          <div class="faq-a">Потому что Ашот в школе на уроках! Если попытаться нажать кнопку заказа в это время — сработает защитная светошумовая граната.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">Куда писать по поводу заказа? <span>+</span></button>
+          <div class="faq-a">Только в Discord: <strong>mr.nuuuubiiiiik</strong>. Никаких почт, созвонов в Zoom и заполнения брифов на 15 страниц.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">А если я случайно нажму на «Светлую тему»? <span>+</span></button>
+          <div class="faq-a">Мы заботимся о вашем зрении, поэтому вместо белого фона сработает флешка с громким звуком. Не проверяйте в наушниках на полной громкости.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2>Оформить заказ у Ашота</h2>
+        <p class="section-sub">Единственный канал связи — Discord. Скопируйте ник или сформируйте готовую заявку ниже.</p>
+
+        <div class="card" style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="font-size: 0.85rem; color: var(--muted);">Discord разработчика</div>
+            <div style="font-size: 1.4rem; font-weight: 900; color: var(--discord);">mr.nuuuubiiiiik</div>
+          </div>
+          <button class="btn btn-discord" onclick="copyText('mr.nuuuubiiiiik', 'Ник Discord mr.nuuuubiiiiik скопирован!')">Скопировать ник Discord</button>
+        </div>
+
+        <div class="card">
+          <h3>Конструктор заявки</h3>
+          <div class="form-grid">
+            <input type="text" id="clientName" placeholder="Ваш ник в Discord или имя">
+            <textarea id="clientTask" placeholder="Что нужно сделать? (например: лендинг с кнопками и тёмной темой)"></textarea>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn" onclick="handleOrderAttempt('copy')">Скопировать готовую заявку</button>
+              <button class="btn btn-outline" onclick="handleOrderAttempt('download')">Скачать заявку (.txt)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>© 2026 Веб-студия «У Ашота» • Discord: mr.nuuuubiiiiik</div>
+      <div class="warning-text">Warning: This website contains bright flashing lights & loud noises.</div>
+    </div>
+  </footer>
+
+  <div class="modal-backdrop" id="workModal" onclick="closeModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+      <h3 id="modalTitle">Название проекта</h3>
+      <p id="modalDesc" style="color: var(--muted); margin-bottom: 20px;"></p>
+      <button class="btn" onclick="document.getElementById('workModal').classList.remove('open')">Закрыть</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Скопировано!</div>
+
+  <script>
+    // Проверка школьного времени (Пн-Пт, 13:00 - 19:59)
+    function isAshotInSchool() {
+      const now = new Date();
+      const day = now.getDay(); // 0 - Вс, 1 - Пн ... 5 - Пт, 6 - Сб
+      const hour = now.getHours();
+      const isWeekday = day >= 1 && day <= 5;
+      const isSchoolHours = hour >= 13 && hour < 20;
+      return isWeekday && isSchoolHours;
+    }
+
+    function updateStatusBar() {
+      const now = new Date();
+      const days = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+      const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('clockText').innerText = `${days[now.getDay()]}, ${timeStr}`;
+
+      const bar = document.getElementById('statusBar');
+      const text = document.getElementById('statusText');
+      if (isAshotInSchool()) {
+        bar.className = 'container status-inner status-school';
+        text.innerText = 'АШОТ В ШКОЛЕ (будни 13:00–20:00) — не нажимай «Заказать»!';
+      } else {
+        bar.className = 'container status-inner status-online';
+        text.innerText = 'Ашот на связи — можно смело заказывать';
+      }
+    }
+    setInterval(updateStatusBar, 1000);
+    updateStatusBar();
+
+    // Звук флешки через Web Audio API
+    function playFlashbangSound() {
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const now = ctx.currentTime;
+
+        // Взрыв (белый шум + низкий удар)
+        const bufferSize = ctx.sampleRate * 1.2;
+        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.25));
+        }
+
+        const whiteNoise = ctx.createBufferSource();
+        whiteNoise.buffer = noiseBuffer;
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.setValueAtTime(1.0, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 1.1);
+
+        whiteNoise.connect(noiseGain);
+        noiseGain.connect(ctx.destination);
+        whiteNoise.start(now);
+
+        // Высокочастотный писк в ушах
+        const osc = ctx.createOscillator();
+        const oscGain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(3200, now);
+
+        oscGain.gain.setValueAtTime(0.001, now);
+        oscGain.gain.linearRampToValueAtTime(0.35, now + 0.08);
+        oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 4.2);
+
+        osc.connect(oscGain);
+        oscGain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 4.3);
+      } catch (e) {}
+    }
+
+    function triggerFlashbang(title, subtitle) {
+      const overlay = document.getElementById('flashOverlay');
+      document.getElementById('flashTitle').innerText = title;
+      document.getElementById('flashSub').innerText = subtitle;
+
+      overlay.classList.remove('fade-out');
+      overlay.classList.add('active');
+      document.body.classList.add('shaking');
+      playFlashbangSound();
+
+      setTimeout(() => {
+        document.body.classList.remove('shaking');
+      }, 500);
+
+      setTimeout(() => {
+        overlay.classList.add('fade-out');
+        overlay.classList.remove('active');
+      }, 1800);
+    }
+
+    // Обработка нажатия на любую кнопку заказа
+    function handleOrderAttempt(action) {
+      if (isAshotInSchool()) {
+        triggerFlashbang('АШОТ В ШКОЛЕ!', 'Будний день, время с 13:00 до 20:00 — не мешай на уроке!');
+        return;
+      }
+
+      if (action === 'scroll') {
+        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      } else if (action === 'calc') {
+        applyCalcToForm();
+      } else if (action === 'copy') {
+        const text = getFormattedOrder();
+        copyText(text, 'Заявка скопирована! Вставьте её в Discord mr.nuuuubiiiiik');
+      } else if (action === 'download') {
+        downloadOrderTxt();
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    function copyText(text, message) {
+      navigator.clipboard.writeText(text).then(() => showToast(message));
+    }
+
+    // Калькулятор BYN
+    const checkboxes = document.querySelectorAll('.calc-cb');
+    checkboxes.forEach(cb => cb.addEventListener('change', updatePrice));
+
+    function updatePrice() {
+      let sum = 0;
+      checkboxes.forEach(cb => {
+        if (cb.checked) sum += parseFloat(cb.dataset.price);
+      });
+      sum = Math.round(sum * 10) / 10;
+      const priceEl = document.getElementById('totalPrice');
+      const dranikiEl = document.getElementById('dranikiPrice');
+
+      priceEl.innerText = sum === 0 ? '0 BYN (или за спасибо)' : `${sum} BYN`;
+      const portions = Math.round((sum / 5) * 10) / 10;
+      dranikiEl.innerText = `Эквивалент: ${portions} порций драников`;
+      return sum;
+    }
+
+    function resetCalc() {
+      checkboxes.forEach(cb => {
+        if (!cb.disabled) cb.checked = false;
+      });
+      updatePrice();
+      showToast('Калькулятор сброшен');
+    }
+
+    function applyCalcToForm() {
+      const selected = [];
+      checkboxes.forEach(cb => {
+        if (cb.checked && cb.dataset.label) selected.push(cb.dataset.label);
+      });
+      const sum = updatePrice();
+      const optionsText = selected.length ? selected.join(', ') : 'базовый каркас';
+      document.getElementById('clientTask').value = `Привет, Ашот! Нужен сайт. Выбрал в калькуляторе: ${optionsText} (итого: ${sum} BYN).`;
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      showToast('Опции подставлены в заявку!');
+    }
+
+    function getFormattedOrder() {
+      const name = document.getElementById('clientName').value.trim() || 'Аноним';
+      const task = document.getElementById('clientTask').value.trim() || 'Хочу заказать сайт у Ашота';
+      return `Заказ в студию «У Ашота»
+От: ${name}
+Задача: ${task}
+Discord студии: mr.nuuuubiiiiik`;
+    }
+
+    function downloadOrderTxt() {
+      const text = getFormattedOrder();
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'zakaz-u-ashota.txt';
+      link.click();
+      showToast('Файл zakaz-u-ashota.txt скачан!');
+    }
+
+    // Таймер 5 минут
+    let timeLeft = 300;
+    let timerInterval = null;
+
+    function toggleTimer() {
+      const btn = document.getElementById('timerBtn');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.innerText = 'Продолжить';
+      } else {
+        btn.innerText = 'Пауза';
+        timerInterval = setInterval(() => {
+          if (timeLeft > 0) {
+            timeLeft--;
+            const mins = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            const secs = String(timeLeft % 60).padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${mins}:${secs}`;
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            btn.innerText = 'Готово!';
+            showToast('5 минут вышли — сайт уже должен быть готов!');
+          }
+        }, 1000);
+      }
+    }
+
+    // Фильтрация работ
+    function filterWorks(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.work-item').forEach(item => {
+        item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'block' : 'none';
+      });
+    }
+
+    // Модалка
+    function openModal(title, desc) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalDesc').innerText = desc;
+      document.getElementById('workModal').classList.add('open');
+    }
+    function closeModal(e) {
+      if (e.target.id === 'workModal') {
+        document.getElementById('workModal').classList.remove('open');
+      }
+    }
+
+    // FAQ
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      item.classList.toggle('open');
+      btn.querySelector('span').innerText = item.classList.contains('open') ? '−' : '+';
+    }
+
+    // Пасхалка
+    let clicks = 0;
+    function easterEgg() {
+      clicks++;
+      if (clicks === 5) {
+        showToast('Секретный промокод: «ШАУРМА ОТ АШОТА» — скидка 100% на улыбку!');
+        clicks = 0;
+      }
+    }
+  </script>
+</body>
+</html>
